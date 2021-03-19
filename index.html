@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAT LPDWCA</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="text-center">CHAT</h1>
+        <div id="main">
+
+        </div>
+        <form>
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label for="name">Prenom</label>
+                </div>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="name">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label for="message">Message</label>
+                </div>
+                <div class="col-sm-6">
+                    <textarea id="message" class="form-control"></textarea>
+                </div>
+            </div>
+            <button class="btn btn-success float-right" type="submit" id="submit">Envoyez</button>
+        </form>
+    </div>
+</div>
+<script>
+    //check service worker on navigator
+    if('serviceWorker' in navigator){
+        navigator.serviceWorker.register('sw.js');
+    }
+
+    //recuperer les messages existants
+    let main=document.getElementById('main');
+    let name=document.getElementById('name');
+    let message=document.getElementById('message');
+    let submit=document.getElementById('submit');
+
+    if(localStorage.getItem('name')){
+        name.value=localStorage.getItem('name');
+    }
+    if(localStorage.getItem('messages')){
+        let elements=JSON.parse(localStorage.getItem('messages'));
+        console.log(elements);
+        elements.forEach(element=>{
+            displayMessages(element);
+        })
+    }
+
+    submit.addEventListener('click', (event)=>{
+        event.preventDefault();
+       if(name.value=="" || message.value==""){
+           alert('vous devez saisir votre nom ou un message');
+       }else{
+           localStorage.setItem('name', name.value);
+           let messages=[];
+           if(localStorage.getItem('messages')){
+             messages=JSON.parse(localStorage.getItem('messages'));
+           }
+
+           let item={
+               'name':name.value,
+               'message':message.value
+           }
+           messages.push(item);
+           localStorage.setItem('messages',JSON.stringify(messages));
+
+       }
+
+
+    })
+
+    function displayMessages(element){
+        let div=document.createElement('DIV');
+        div.classList.add('row');
+        let div2=document.createElement('DIV');
+        div2.classList.add('col-sm-3');
+        div2.innerHTML=element.name;
+        let div3=document.createElement('DIV');
+        div3.classList.add('col-sm-6');
+        div3.innerHTML=element.message;
+        div.appendChild(div2);
+        div.appendChild(div3);
+        main.appendChild(div);
+    }
+
+</script>
+
+</body>
+</html>
