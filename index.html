@@ -41,6 +41,16 @@
     if('serviceWorker' in navigator){
         navigator.serviceWorker.register('sw.js');
     }
+    if(window.caches){
+        caches.open('PWA-LPDWA').then(
+            (cache)=>{
+                cache.addAll([
+                    'index.html',
+                    'sw.js'
+                ])
+            }
+        )
+    }
 
     //recuperer les messages existants
     let main=document.getElementById('main');
