@@ -1,7 +1,7 @@
 {
   "name": "LPDWCA PWA",
   "short_name": "LPWA",
-  "start_url": "/",
+  "start_url": "./",
   "scope": "/",
   "display": "standalone",
    "theme_color": "#4285f4",
