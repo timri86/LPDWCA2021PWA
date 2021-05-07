@@ -52,6 +52,28 @@
         )
     }
 
+
+
+    //demander à l'utilisateur s'il accepte des notifications
+
+    //1. default
+
+    if(Notification.permission === 'default'){
+        requestNotification();
+    }
+
+
+    //2. granted
+    if(Notification.permission === 'granted'){
+        displayNotification();
+    }
+
+
+    //3. Denied
+    if(Notification.permission === 'denied'){
+        console.log('notification refusée');
+    }
+
     //recuperer les messages existants
     let main=document.getElementById('main');
     let name=document.getElementById('name');
@@ -105,6 +127,22 @@
         div.appendChild(div3);
         main.appendChild(div);
     }
+
+    function requestNotification(){
+        Notification.requestPermission().then(permission=>{
+            console.log(permission);
+        })
+    }
+
+    function displayNotification(){
+        let texte='Ma notif';
+        let params={
+            body: texte,
+            icon:'./icon/android-icon-192x192-dunplab-manifest-28617.png'
+        }
+        const notification= new Notification ('My first Notification', params)
+    }
+
 
 </script>
 
